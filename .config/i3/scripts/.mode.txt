@@ -1,0 +1,1 @@
+[l]ogout  [r]eboot  [s]hutdown

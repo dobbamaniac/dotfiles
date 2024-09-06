@@ -1,0 +1,246 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+
+
+######### COLORS ###########
+set_from_resource $color0 i3wm.color0 "#1b1e1e"
+set_from_resource $color1 i3wm.color1 "#7b8e95"
+set_from_resource $color2 i3wm.color2 "#58788c"
+set_from_resource $color3 i3wm.color3 "#c5b19b"
+set_from_resource $color4 i3wm.color4 "#455f80"
+set_from_resource $color5 i3wm.color5 "#879bb4"
+set_from_resource $color6 i3wm.color6 "#98b5c9"
+set_from_resource $color7 i3wm.color7 "#c6c6c6"
+set_from_resource $color8 i3wm.color8 "#323838"
+set_from_resource $color9 i3wm.color9 "#8ec0d3"
+set_from_resource $color10 i3wm.color10 "#639fc4"
+set_from_resource $color11 i3wm.color11 "#ffe7b2"
+set_from_resource $color12 i3wm.color12 "#4c79b3"
+set_from_resource $color13 i3wm.color13 "#9bc7fe"
+set_from_resource $color14 i3wm.color14 "#aeefff"
+set_from_resource $color15 i3wm.color15 "#ffffff"
+
+# class                 border		backgr.		text    	indicator 	child_border
+client.focused          $color10	$color10 	$color8		$color9		$color10
+client.focused_inactive $color2		$color2		$color8 	$color9		$color2
+client.unfocused        $color2		$color2 	$color0 	$color9		$color2
+client.urgent           $color7		$color7 	$color9 	$color9		$color7
+client.placeholder      $color11	$color11 	$color8 	$color9		$color11
+
+client.background       #222222
+
+
+
+########## AESTHETICS ##########
+default_border none
+default_floating_border none
+hide_edge_borders smart
+
+gaps inner 3
+gaps outer 0
+smart_gaps on
+
+font pango:SFPro Display, Light, 10
+title_align center
+
+
+
+###### KEYBINDINGS #######
+# set variables
+set $uper bindsym Mod4
+set $witchlaunch exec --no-startup-id ~/.config/i3/scripts/switchLaunch.sh
+set $mousebind bindsym --whole-window --border Mod4
+set $movewindow exec --no-startup-id ~/.config/i3/scripts/moveWindowTo.sh
+set $crollmovewindow exec --no-startup-id ~/.config/i3/scripts/scrollMoveWindow.sh
+set $howbar exec --no-startup-id ~/.config/i3/scripts/showBar.sh
+
+# Use Mouse+Mod4 to drag floating windows to their wanted position
+floating_modifier Mod4
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier
+tiling_drag modifier titlebar
+
+# kill focused window
+$uper+q exec ~/.config/i3/scripts/windowKill.sh
+
+# change focus
+$uper+Left focus left
+$uper+Down focus down
+$uper+Up focus up
+$uper+Right focus right
+
+# move focused window
+$uper+Shift+Left move left
+$uper+Shift+Down move down
+$uper+Shift+Up move up
+$uper+Shift+Right move right
+
+$mousebind+Shift+button4 $crollmovewindow up
+$mousebind+Shift+button5 $crollmovewindow down
+$mousebind+Shift+button6 $crollmovewindow left
+$mousebind+Shift+button7 $crollmovewindow right
+
+# move focused workspace to a different output
+$uper+Shift+comma move workspace to output left
+$uper+Shift+period move workspace to output right
+
+# toggle split orientation
+$uper+v split toggle
+
+# toggle fullscreen
+$uper+z fullscreen toggle
+
+# toggle floating 
+$uper+Shift+z floating toggle
+
+# change container layout (stacked, tabbed, toggle split)
+$uper+c layout toggle tabbed split
+
+# show scratchpad 
+$uper+j exec --no-startup-id ~/.config/i3/scripts/scratchpad.sh
+
+# reload the configuration file
+$uper+Shift+c reload
+
+# restart i3 in place
+$uper+Home restart
+
+# tab through workplaces
+$uper+Tab workspace next
+$uper+Shift+Tab workspace prev
+
+# scroll through workplaces
+$mousebind+button7 exec --no-startup-id ~/.config/i3/scripts/workspacescroll.sh next
+$mousebind+button6 exec --no-startup-id ~/.config/i3/scripts/workspacescroll.sh prev
+
+# Audio control using pactl to adjust volume in PulseAudio.
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle, $howbar status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%, $howbar status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%, $howbar status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle, $howbar status
+
+# Media controls
+$uper+comma exec playerctl previous, $howbar nowplaying
+$uper+period exec playerctl next, $howbar nowplaying
+$uper+slash exec playerctl play-pause, $howbar nowplaying
+
+# Screen brightness controls using xbacklight
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%, $howbar status
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-, $howbar status
+
+# bring up the workspaces bar
+$uper+grave $howbar workspaces
+
+# bring up the usage bar
+$uper+Shift+grave $howbar usage
+
+# bring up the status bar
+$uper+equal $howbar status
+
+# bring up the now playing bar
+$uper+Shift+equal $howbar nowplaying
+
+# set a random new wallpaper and theme
+bindsym XF86Favorites exec --no-startup-id ~/.config/i3/scripts/randomTheme.sh
+
+
+
+###### EXECUTE PROGRAMS ######
+# start a terminal
+$uper+Return exec kitty
+
+# start dmenu
+$uper+space exec --no-startup-id i3-dmenu-desktop --dmenu='dmenu -i -nf $color8 -nb $color6 -sf $color0 -sb $color14'
+
+
+
+###### WORKSPACES ######
+# switch to workspace
+$uper+1 workspace 1
+$uper+2 workspace 2
+$uper+3 workspace 3
+
+$uper+w $witchlaunch firefox
+$uper+e $witchlaunch gedit
+$uper+f $witchlaunch thunar
+$uper+m $witchlaunch spotify-launcher
+$uper+p $witchlaunch steam
+$uper+bracketleft $witchlaunch discord
+$uper+o $witchlaunch obsidian
+
+
+# move focused container to workspace
+$uper+Shift+1 move container to workspace 1; workspace 1
+$uper+Shift+2 move container to workspace 2; workspace 2
+$uper+Shift+3 move container to workspace 3; workspace 3
+
+$uper+Shift+w $movewindow firefox
+$uper+Shift+e $movewindow gedit
+$uper+Shift+f $movewindow thunar
+$uper+Shift+m $movewindow spotify-launcher
+$uper+Shift+p $movewindow steam
+$uper+Shift+bracketleft $movewindow discord
+$uper+Shift+o $movewindow obsidian
+$uper+Shift+Return $movewindow kitty
+
+
+
+########## MODES ##########
+# Logout, reboot, and shutdown
+mode "[l]ogout  [r]eboot  [s]hutdown" {
+  bindsym l exec i3-msg exit
+  bindsym r exec systemctl reboot
+  bindsym s exec systemctl poweroff
+  bindsym Escape mode "default"
+  bindsym Return mode "default"
+  $uper+Escape mode "default"
+}
+
+$uper+Escape mode "[l]ogout  [r]eboot  [s]hutdown"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 1 px or 1 ppt
+        bindsym k resize grow height 1 px or 1 ppt
+        bindsym l resize shrink height 1 px or 1 ppt
+        bindsym semicolon resize grow width 1 px or 1 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 1 px or 1 ppt
+        bindsym Down resize grow height 1 px or 1 ppt
+        bindsym Up resize shrink height 1 px or 1 ppt
+        bindsym Right resize grow width 1 px or 1 ppt
+
+        # back to normal: Enter or Escape or Mod4+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        $uper+r mode "default"
+}
+
+$uper+r mode "resize"
+
+
+
+##### WINDOWS ######
+for_window [class = "Wpg"] floating enable
+for_window [instance = "kitty" title = "scratchpad"] move scratchpad
+
+
+
+###### STARTUP ######
+exec --no-startup-id xset r rate 250 50
+exec --no-startup-id xmodmap ~/.Xmodmap
+exec --no-startup-id nm-applet
+exec --no-startup-id kitty -T scratchpad
+#exec --no-startup-id kitty -e "neofetch; bash"
+exec_always --no-startup-id picom -b --config ~/.config/picom/picom2.conf
+exec_always --no-startup-id ~/.config/polybar/scripts/launch2.sh

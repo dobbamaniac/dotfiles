@@ -1,0 +1,10 @@
+remove Lock = Caps_Lock
+add Control = Control_L
+keycode 133 = Super_L 
+keycode 107 = Super_L
+add Mod4 = Super_L
+keycode 66 = Mode_switch
+keycode 44 = j J Left J
+keycode 31 = i I Up I
+keycode 45 = k K Down K
+keycode 46 = l L Right L
